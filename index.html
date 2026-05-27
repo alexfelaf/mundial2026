@@ -21,22 +21,28 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd)}
 .hdr{max-width:1120px;margin:0 auto;padding:0 16px;height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .logo-wrap{display:flex;align-items:center;gap:10px}
-.logo-img{height:36px;width:auto}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--g);line-height:1}
+.logo-img{height:30px;width:auto}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--g);line-height:1;white-space:nowrap}
 .logo em{color:var(--t);font-style:normal}
-.hdr-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.hdr-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .live-pill{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--g);background:rgba(0,212,106,.1);padding:4px 10px;border-radius:20px;border:1px solid rgba(0,212,106,.2)}
 .live-dot{width:6px;height:6px;border-radius:50%;background:var(--g);animation:blink 1.6s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 .clock{font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)}
-.hdr-btns{display:flex;align-items:center;gap:6px}
-.hdr-btn{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:6px 12px;border-radius:20px;text-decoration:none;border:1px solid var(--bd2);color:var(--t2);transition:all .15s;white-space:nowrap}
+.hdr-btns{display:flex;align-items:center;gap:5px}
+.hdr-btn{display:flex;align-items:center;justify-content:center;gap:4px;font-size:11px;font-weight:600;padding:6px 12px;border-radius:20px;text-decoration:none;border:1px solid var(--bd2);color:var(--t2);transition:all .15s;white-space:nowrap;cursor:pointer;background:none;font-family:'DM Sans',sans-serif}
 .hdr-btn:hover{color:var(--t);border-color:var(--t2)}
 .hdr-btn.wa{background:#25D366;border-color:#25D366;color:#fff}
 .hdr-btn.wa:hover{background:#1ebe5c}
 .hdr-btn.form{background:var(--g);border-color:var(--g);color:#000}
 .hdr-btn.form:hover{background:#00b85c}
-@media(max-width:600px){.clock{display:none}.hdr-btn span{display:none}}
+@media(max-width:600px){
+  .clock{display:none}
+  .logo-img{display:none}
+  .hdr-btn span{display:none}
+  .hdr-btn{padding:7px;border-radius:50%;width:32px;height:32px;font-size:14px}
+  .live-pill{font-size:9px;padding:3px 8px}
+}
 
 /* LAYOUT */
 .page{max-width:1120px;margin:0 auto;padding:20px 16px 60px;position:relative;z-index:1}
@@ -160,7 +166,18 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
 <header>
   <div class="hdr">
     <div class="logo-wrap">
-      <img class="logo-img" src="https://upload.wikimedia.org/wikipedia/en/thumb/5/5e/2026_FIFA_World_Cup_emblem.svg/200px-2026_FIFA_World_Cup_emblem.svg.png" alt="Mundial 2026" onerror="this.style.display='none'">
+      <svg class="logo-img" viewBox="0 0 44 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:38px;width:auto">
+        <!-- Trophy cup -->
+        <path d="M22 4 C16 4 12 8 12 14 C12 20 16 25 22 27 C28 25 32 20 32 14 C32 8 28 4 22 4Z" fill="#FFD600"/>
+        <path d="M12 14 C8 14 5 11 5 8 L10 8 C10 10 11 12 12 14Z" fill="#FFD600"/>
+        <path d="M32 14 C36 14 39 11 39 8 L34 8 C34 10 33 12 32 14Z" fill="#FFD600"/>
+        <rect x="19" y="27" width="6" height="8" fill="#FFD600"/>
+        <rect x="14" y="35" width="16" height="3" rx="1.5" fill="#FFD600"/>
+        <!-- Stars -->
+        <text x="22" y="3" text-anchor="middle" font-size="5" fill="#FFD600">★★★</text>
+        <!-- 2026 text -->
+        <text x="22" y="48" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="10" fill="#00D46A" letter-spacing="2">2026</text>
+      </svg>
       <div class="logo">Polla <em>Mundial</em> 2026</div>
     </div>
     <div class="hdr-right">
