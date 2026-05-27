@@ -151,10 +151,10 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.9);backdrop-f
 </div>
 
 <script>
-const SHEET='1KgHR06ucMFjhQvT2zCSg253rysVl21Xau47ag9_ZAxA';
+const BASE='https://docs.google.com/spreadsheets/d/e/2PACX-1vSZ22q4PrBoUXSqDCJtw93VGCEkG9hHEz1uumZ0vmpVh8zfUSJ8I4O1Bz8E3ihec236l3SO91tkKQpI/pub';
 const URLS={
-  tabla:    `https://docs.google.com/spreadsheets/d/${SHEET}/export?format=csv&gid=186723370`,
-  results:  `https://docs.google.com/spreadsheets/d/${SHEET}/export?format=csv&gid=1059730197`,
+  tabla:   BASE+'?gid=186723370&single=true&output=csv',
+  results: BASE+'?gid=1059730197&single=true&output=csv',
 };
 
 // ── FLAGS ──────────────────────────────────────────────
