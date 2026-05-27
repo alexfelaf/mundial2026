@@ -47,7 +47,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.9);backdrop-f
 @keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .eq{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
 .eq.r{align-items:flex-end}
-.eq-flag{font-size:26px;line-height:1}
+.eq-flag{font-size:26px;line-height:1;height:28px;display:flex;align-items:center}
 .eq-name{font-size:13px;font-weight:600;color:var(--t)}
 .centro{display:flex;flex-direction:column;align-items:center;gap:3px}
 .score{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:var(--g)}
@@ -86,7 +86,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.9);backdrop-f
 .res-card.fin{border-color:rgba(0,212,106,.12)}
 .res-eq{display:flex;align-items:center;gap:7px}
 .res-eq.r{flex-direction:row-reverse;justify-content:flex-start}
-.res-flag{font-size:18px;line-height:1}
+.res-flag{font-size:18px;line-height:1;height:22px;display:flex;align-items:center}
 .res-name{font-size:12px;font-weight:500;color:var(--t)}
 .res-mid{display:flex;flex-direction:column;align-items:center;gap:2px}
 .res-score{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--g)}
@@ -151,27 +151,33 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.9);backdrop-f
 </div>
 
 <script>
+const PROXY='https://corsproxy.io/?';
+const SHEET_BASE='https://docs.google.com/spreadsheets/d/e/2PACX-1vSZ22q4PrBoUXSqDCJtw93VGCEkG9hHEz1uumZ0vmpVh8zfUSJ8I4O1Bz8E3ihec236l3SO91tkKQpI/pub';
 const URLS={
-  tabla:   'https://docs.google.com/spreadsheets/d/e/2PACX-1vSZ22q4PrBoUXSqDCJtw93VGCEkG9hHEz1uumZ0vmpVh8zfUSJ8I4O1Bz8E3ihec236l3SO91tkKQpI/pub?gid=186723370&single=true&output=csv',
-  results: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSZ22q4PrBoUXSqDCJtw93VGCEkG9hHEz1uumZ0vmpVh8zfUSJ8I4O1Bz8E3ihec236l3SO91tkKQpI/pub?gid=1059730197&single=true&output=csv',
+  tabla:   PROXY+encodeURIComponent(SHEET_BASE+'?gid=186723370&single=true&output=csv'),
+  results: PROXY+encodeURIComponent(SHEET_BASE+'?gid=1059730197&single=true&output=csv'),
 };
 
 // ── FLAGS ──────────────────────────────────────────────
-const FLAGS={
-  'México':'🇲🇽','Sudáfrica':'🇿🇦','Corea del Sur':'🇰🇷','Chequia':'🇨🇿',
-  'Canadá':'🇨🇦','Bosnia-Herzegovina':'🇧🇦','EE.UU.':'🇺🇸','Paraguay':'🇵🇾',
-  'Catar':'🇶🇦','Suiza':'🇨🇭','Brasil':'🇧🇷','Marruecos':'🇲🇦',
-  'Haití':'🇭🇹','Escocia':'🏴󠁧󠁢󠁳󠁣󠁴󠁿','Australia':'🇦🇺','Turquía':'🇹🇷',
-  'Alemania':'🇩🇪','Curazao':'🇨🇼','Países Bajos':'🇳🇱','Japón':'🇯🇵',
-  'Costa de Marfil':'🇨🇮','Ecuador':'🇪🇨','Suecia':'🇸🇪','Túnez':'🇹🇳',
-  'España':'🇪🇸','Cabo Verde':'🇨🇻','Bélgica':'🇧🇪','Egipto':'🇪🇬',
-  'Arabia Saudita':'🇸🇦','Uruguay':'🇺🇾','Irán':'🇮🇷','Nueva Zelanda':'🇳🇿',
-  'Francia':'🇫🇷','Senegal':'🇸🇳','Irak':'🇮🇶','Noruega':'🇳🇴',
-  'Argentina':'🇦🇷','Argelia':'🇩🇿','Austria':'🇦🇹','Jordania':'🇯🇴',
-  'Portugal':'🇵🇹','R.D. Congo':'🇨🇩','Inglaterra':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','Croacia':'🇭🇷',
-  'Ghana':'🇬🇭','Panamá':'🇵🇦','Uzbekistán':'🇺🇿','Colombia':'🇨🇴',
+const FLAG_CODES={
+  'México':'mx','Sudáfrica':'za','Corea del Sur':'kr','Chequia':'cz',
+  'Canadá':'ca','Bosnia-Herzegovina':'ba','EE.UU.':'us','Paraguay':'py',
+  'Catar':'qa','Suiza':'ch','Brasil':'br','Marruecos':'ma',
+  'Haití':'ht','Escocia':'gb-sct','Australia':'au','Turquía':'tr',
+  'Alemania':'de','Curazao':'cw','Países Bajos':'nl','Japón':'jp',
+  'Costa de Marfil':'ci','Ecuador':'ec','Suecia':'se','Túnez':'tn',
+  'España':'es','Cabo Verde':'cv','Bélgica':'be','Egipto':'eg',
+  'Arabia Saudita':'sa','Uruguay':'uy','Irán':'ir','Nueva Zelanda':'nz',
+  'Francia':'fr','Senegal':'sn','Irak':'iq','Noruega':'no',
+  'Argentina':'ar','Argelia':'dz','Austria':'at','Jordania':'jo',
+  'Portugal':'pt','R.D. Congo':'cd','Inglaterra':'gb-eng','Croacia':'hr',
+  'Ghana':'gh','Panamá':'pa','Uzbekistán':'uz','Colombia':'co',
 };
-const flag=n=>FLAGS[n]||'🏳️';
+const flag=n=>{
+  const code=FLAG_CODES[n];
+  if(!code)return '<span style="font-size:20px">🏳️</span>';
+  return `<img src="https://flagcdn.com/w40/${code}.png" width="28" height="20" style="border-radius:3px;object-fit:cover;vertical-align:middle" alt="${n}">`;
+};
 
 // ── PARTIDOS DATA ──────────────────────────────────────
 const PD=[
@@ -262,9 +268,21 @@ function getFechaHoy(){
 }
 
 async function fetchCSV(url){
-  const r=await fetch(url+'&t='+Date.now());
-  if(!r.ok)throw new Error(r.status);
-  return r.text();
+  // intentar directo primero, luego proxy
+  const proxies=[
+    'https://corsproxy.io/?',
+    'https://api.allorigins.win/raw?url=',
+  ];
+  // quitar el proxy del url si ya lo tiene para re-intentar limpio
+  const cleanUrl=url.replace(/^https:\/\/corsproxy\.io\/\?/,'').replace(/^https:\/\/api\.allorigins\.win\/raw\?url=/,'');
+  const decoded=decodeURIComponent(cleanUrl);
+  for(const proxy of proxies){
+    try{
+      const r=await fetch(proxy+encodeURIComponent(decoded)+'&t='+Date.now());
+      if(r.ok){const t=await r.text();if(t&&!t.includes('<html'))return t;}
+    }catch(e){}
+  }
+  throw new Error('No se pudo cargar desde ningún proxy');
 }
 
 function parseCSV(txt){
