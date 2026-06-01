@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Polla Mundial 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://flagcdn.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -128,17 +131,30 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
 .res-vs{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:1px;color:var(--t3)}
 .res-hora{font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)}
 
+/* FAQ BANNER DESPLEGABLE */
+.faq-banner{background:var(--s1);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-bottom:4px}
+.faq-banner-btn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:none;border:none;color:var(--t);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-align:left;transition:background .15s}
+.faq-banner-btn:hover{background:var(--s2)}
+.faq-chevron{font-size:11px;color:var(--t3);transition:transform .25s ease;display:inline-block}
+.faq-banner-body{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 20px}
+.faq-banner-body.open{max-height:1200px;padding:0 20px 16px}
+
 /* FAQ MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;display:none;align-items:flex-end;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal{background:#161C1E;border-top:1px solid rgba(255,255,255,0.1);border-radius:20px 20px 0 0;width:100%;max-width:100%;padding:0;position:relative;animation:slideup .3s ease;max-height:88vh;display:flex;flex-direction:column}
 @keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@media(min-width:600px){
+  .modal-overlay{align-items:center}
+  .modal{border-radius:16px;max-width:500px;border-top:none;border:1px solid rgba(255,255,255,0.1);animation:up .25s ease}
+  .modal-handle{display:none}
+}
 .modal-handle{width:36px;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin:12px auto 0}
 .modal-header{padding:16px 20px 12px;border-bottom:1px solid var(--bd);flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
 .modal-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--g);line-height:1}
 .modal-close{background:var(--s2);border:none;color:var(--t2);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .modal-close:hover{color:var(--t)}
-.modal-body{overflow-y:auto;padding:16px 20px 32px;-webkit-overflow-scrolling:touch}
+.modal-body{overflow-y:auto;padding:16px 20px 28px;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column}
 .faq-item{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
 .faq-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
 .faq-q{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t2);margin-bottom:6px}
@@ -204,27 +220,12 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
 <header>
   <div class="hdr">
     <div class="logo-wrap">
-      <svg viewBox="0 0 48 56" style="height:38px;width:auto;flex-shrink:0" xmlns="http://www.w3.org/2000/svg">
-        <!-- handles -->
-        <path d="M13 16 C9 16 6 13 6 9 L11 9 C11 12 12 14 13 16Z" fill="#FFD600"/>
-        <path d="M35 16 C39 16 42 13 42 9 L37 9 C37 12 36 14 35 16Z" fill="#FFD600"/>
-        <!-- cup body -->
-        <path d="M13 8 L35 8 L35 18 C35 25 30 30 24 32 C18 30 13 25 13 18Z" fill="#FFD600"/>
-        <!-- stem -->
-        <rect x="21" y="32" width="6" height="8" fill="#FFD600"/>
-        <!-- base -->
-        <rect x="15" y="40" width="18" height="4" rx="2" fill="#FFD600"/>
-        <!-- shine -->
-        <path d="M17 11 C17 11 19 15 19 19" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-linecap="round"/>
-        <!-- stars -->
-        <text x="24" y="6" text-anchor="middle" font-size="5" fill="#FFD600">★ ★ ★</text>
-        <!-- 2026 -->
-        <text x="24" y="52" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="8" font-weight="900" fill="#00D46A" letter-spacing="1">2026</text>
-      </svg>
+      <img src="https://crests.football-data.org/wm26.png" style="height:38px;width:auto;flex-shrink:0" alt="FIFA World Cup 2026">
       <div class="logo">Polla <em>Mundial</em> 2026</div>
     </div>
     <div class="hdr-right">
       <div class="hdr-btns">
+        <a href="https://docs.google.com/spreadsheets/d/1KgHR06ucMFjhQvT2zCSg253rysVl21Xau47ag9_ZAxA/view" target="_blank" class="hdr-btn">📊 <span>Tabla</span></a>
         <a href="https://forms.gle/ZuRE5Vk8ewWK9Yy48" target="_blank" class="hdr-btn form">✏️ <span>Pronósticos</span></a>
         <a href="https://chat.whatsapp.com/KnDM4gE9ZR7Gr8ebYQebJr?mode=gi_t" target="_blank" class="hdr-btn wa">💬 <span>WhatsApp</span></a>
         <button onclick="openFaq()" class="hdr-btn">❓ <span>FAQ</span></button>
@@ -237,7 +238,53 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
 
 <div class="page">
 
-  <!-- CTA SIEMPRE PRIMERO -->
+  <!-- FAQ DESPLEGABLE -->
+  <div class="faq-banner" id="faqBanner">
+    <button class="faq-banner-btn" onclick="toggleFaq()" id="faqBannerBtn">
+      <span>❓ Preguntas Frecuentes</span>
+      <span class="faq-chevron" id="faqChevron">▼</span>
+    </button>
+    <div class="faq-banner-body" id="faqBannerBody">
+      <div class="faq-item">
+        <div class="faq-q">¿Hasta cuándo puedo ingresar mi pronóstico?</div>
+        <div class="faq-a">El formulario cierra el <strong>11 de junio a las 13:50 (COL)</strong>, 10 minutos antes del primer partido México vs Sudáfrica.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Qué se pronostica?</div>
+        <div class="faq-a">El resultado a los <strong>90 minutos</strong> en todas las fases. <strong>No incluye</strong> tiempo extra ni penales.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Cómo se puntúa?</div>
+        <div class="faq-a"><strong>1 punto</strong> por cada pronóstico correcto.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Cuánto vale participar?</div>
+        <div class="faq-a"><strong>$100.000 COP</strong> o su equivalente.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Cómo se reparten los premios?</div>
+        <div class="faq-a">
+          <strong>1° puesto:</strong> 70% del total recaudado.<br>
+          <strong>2° puesto:</strong> 30% del total recaudado.<br><br>
+          En caso de empate en el <strong>1° puesto</strong>, el 100% se reparte en partes iguales.<br>
+          En caso de empate en el <strong>2° puesto</strong>, el 30% se reparte en partes iguales.
+        </div>
+      </div>
+      <div class="faq-item" style="border-bottom:none;margin-bottom:0;padding-bottom:0">
+        <div class="faq-q">¿Cómo pago?</div>
+        <div class="faq-a">
+          <strong>Nequi:</strong> 317 430 0861<br>
+          <strong>Bre-B:</strong> alexfelaf@gmail.com<br>
+          <strong>Zelle:</strong> 678 371 0427<br><br>
+          Enviá el comprobante al grupo de WhatsApp para confirmar tu participación.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CTA PRONÓSTICOS -->
   <a href="https://forms.gle/ZuRE5Vk8ewWK9Yy48" target="_blank" class="cta-banner">
     <div class="cta-icon">✏️</div>
     <div class="cta-text">
@@ -256,13 +303,13 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
 
       <!-- HOY -->
       <div class="stitle">⚽ Partidos de <span>Hoy</span></div>
-      <div id="hoyBody"><div class="loading"><div class="spin"></div>Cargando...</div></div>
+      <div id="hoyBody"><div class="hoy-empty">Cargando partidos...</div></div>
 
       <div class="divider"></div>
 
       <!-- RESULTADOS -->
       <div class="stitle">Todos los <span>Resultados</span> <small>Fase de grupos</small></div>
-      <div id="resBody"><div class="loading"><div class="spin"></div>Cargando...</div></div>
+      <div id="resBody"></div>
 
     </div>
 
@@ -281,11 +328,11 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
 </div>
 
 <script>
-const PROXY='https://corsproxy.io/?';
 const SHEET_BASE='https://docs.google.com/spreadsheets/d/e/2PACX-1vSZ22q4PrBoUXSqDCJtw93VGCEkG9hHEz1uumZ0vmpVh8zfUSJ8I4O1Bz8E3ihec236l3SO91tkKQpI/pub';
+// gid 1059730197 = Resultados, gid 186723370 = Tabla
 const URLS={
-  tabla:   PROXY+encodeURIComponent(SHEET_BASE+'?gid=186723370&single=true&output=csv'),
-  results: PROXY+encodeURIComponent(SHEET_BASE+'?gid=1059730197&single=true&output=csv'),
+  results: SHEET_BASE+'?gid=1059730197&single=true&output=csv',
+  tabla:   SHEET_BASE+'?gid=186723370&single=true&output=csv',
 };
 
 // FLAGS
@@ -389,29 +436,32 @@ const FORD=["Jue 11 jun","Vie 12 jun","Sáb 13 jun","Dom 14 jun","Lun 15 jun","M
 
 function getFechaHoy(){
   const d=new Date();
+  // Adjust to COL (UTC-5)
+  const col=new Date(d.getTime()-5*3600000);
   const dias=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
   const meses=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
-  return `${dias[d.getDay()]} ${d.getDate()} ${meses[d.getMonth()]}`;
+  return `${dias[col.getDay()]} ${col.getDate()} ${meses[col.getMonth()]}`;
 }
 
-async function fetchCSV(url){
-  const base='https://docs.google.com/spreadsheets/d/e/2PACX-1vSZ22q4PrBoUXSqDCJtw93VGCEkG9hHEz1uumZ0vmpVh8zfUSJ8I4O1Bz8E3ihec236l3SO91tkKQpI/pub';
-  const gid=url.includes('186723370')?'186723370':'1059730197';
-  const sheetUrl=base+'?gid='+gid+'&single=true&output=csv';
+// ── FETCH CSV with multiple proxies + timeout ──────────────────────────
+async function fetchCSV(gid){
+  const sheetUrl=SHEET_BASE+'?gid='+gid+'&single=true&output=csv&t='+Date.now();
   const proxies=[
     'https://api.allorigins.win/raw?url=',
     'https://corsproxy.io/?',
-    'https://thingproxy.freeboard.io/fetch/',
     'https://api.codetabs.com/v1/proxy?quest=',
   ];
   for(const p of proxies){
     try{
-      const r=await fetch(p+encodeURIComponent(sheetUrl),{cache:'no-store'});
+      const ctrl=new AbortController();
+      const timer=setTimeout(()=>ctrl.abort(),5000);
+      const r=await fetch(p+encodeURIComponent(sheetUrl),{signal:ctrl.signal});
+      clearTimeout(timer);
       if(r.ok){
         const t=await r.text();
         if(t&&t.length>10&&!t.trim().startsWith('<'))return t;
       }
-    }catch(e){console.log('proxy failed:',p,e.message);}
+    }catch(e){console.log('proxy failed:',p);}
   }
   throw new Error('fetch failed');
 }
@@ -430,41 +480,46 @@ function parseCSV(txt){
   });
 }
 
+// ── RESULTADOS MAP ─────────────────────────────────────────────────────
+// Hoja Resultados: col0=Partido#, col1=Local, col2=Visitante, col3=GolLocal, col4=GolVisitante
+// resultadosMap[n] = {gl: number, gv: number} cuando el partido está jugado
 let resultadosMap={};
 
 async function loadResultados(){
-  const txt=await fetchCSV(URLS.results);
+  const txt=await fetchCSV('1059730197');
   const rows=parseCSV(txt).slice(1);
   resultadosMap={};
-  rows.forEach(r=>{if(r[2]&&r[4]&&r[4].trim())resultadosMap[parseInt(r[0])]=r[4].trim();});
+  rows.forEach(r=>{
+    const num=parseInt(r[0]);
+    const gl=r[3]!==undefined&&r[3].trim()!==''?parseInt(r[3]):null;
+    const gv=r[4]!==undefined&&r[4].trim()!==''?parseInt(r[4]):null;
+    if(!isNaN(num)&&gl!==null&&!isNaN(gl)&&gv!==null&&!isNaN(gv)){
+      resultadosMap[num]={gl,gv};
+    }
+  });
 }
 
-function getResLabel(num,l,v){
-  const res=resultadosMap[num];
-  if(!res)return null;
-  if(res==='Empate')return 'Empate';
-  if(res===`Gana ${l}`)return l;
-  if(res===`Gana ${v}`)return v;
-  return res;
+function getScore(num){
+  return resultadosMap[num]||null;
 }
 
-// HOY
+// ── HOY ────────────────────────────────────────────────────────────────
 function renderHoy(){
   const hoy=getFechaHoy();
   const ps=PD.filter(p=>p.f===hoy);
   const el=document.getElementById('hoyBody');
   if(!ps.length){
-    const prox=FORD.find(f=>PD.some(p=>p.f===f));
+    const prox=FORD.find(f=>PD.some(p=>p.f===f&&!getScore(p.n)));
     el.innerHTML=`<div class="hoy-empty">No hay partidos hoy · Próxima fecha: <strong>${prox||'por definir'}</strong></div>`;
     return;
   }
   el.innerHTML=`<div class="hoy-cards">${ps.map((p,i)=>{
-    const fin=!!resultadosMap[p.n];
-    const rl=fin?getResLabel(p.n,p.l,p.v):'';
+    const sc=getScore(p.n);
+    const fin=!!sc;
     return `<div class="hoy-card ${fin?'fin':'prox'}" style="animation-delay:${i*.07}s">
       <div class="eq"><div class="eq-flag">${flag(p.l)}</div><div class="eq-name">${p.l}</div></div>
       <div class="centro">
-        ${fin?`<div class="score">${rl}</div><div class="fin-badge">Final</div>`:`<div class="vstext">VS</div>`}
+        ${fin?`<div class="score">${sc.gl} - ${sc.gv}</div><div class="fin-badge">Final</div>`:`<div class="vstext">VS</div>`}
         <div class="hora-tag">${p.h} (COL)</div>
         <div class="sede-tag">${p.s}</div>
       </div>
@@ -473,7 +528,7 @@ function renderHoy(){
   }).join('')}</div>`;
 }
 
-// RESULTADOS
+// ── RESULTADOS ─────────────────────────────────────────────────────────
 function renderResultados(){
   const el=document.getElementById('resBody');
   const pf={};
@@ -481,11 +536,11 @@ function renderResultados(){
   el.innerHTML=FORD.map(fecha=>{
     const ps=pf[fecha]||[];
     const cards=ps.map(p=>{
-      const fin=!!resultadosMap[p.n];
-      const rl=fin?getResLabel(p.n,p.l,p.v):'';
+      const sc=getScore(p.n);
+      const fin=!!sc;
       return `<div class="res-card ${fin?'fin':''}">
         <div class="res-eq"><span class="res-flag">${flag(p.l)}</span><span class="res-name">${p.l}</span></div>
-        <div class="res-mid">${fin?`<div class="res-score">${rl}</div>`:`<div class="res-vs">VS</div><div class="res-hora">${p.h}</div>`}</div>
+        <div class="res-mid">${fin?`<div class="res-score">${sc.gl} - ${sc.gv}</div>`:`<div class="res-vs">VS</div><div class="res-hora">${p.h}</div>`}</div>
         <div class="res-eq r"><span class="res-flag">${flag(p.v)}</span><span class="res-name">${p.v}</span></div>
       </div>`;
     }).join('');
@@ -493,52 +548,71 @@ function renderResultados(){
   }).join('');
 }
 
-// TABLA
+// ── TABLA DE POSICIONES ────────────────────────────────────────────────
+// Hoja Tabla: col0=Pos, col1=Nombre, col2=Puntos, col3=Jugados, col4=%
 function buildTablaHTML(rows){
-  if(!rows.length)return '<div class="loading" style="color:var(--t3)">Sin datos aún</div>';
-  return rows.map((r,i)=>{
+  if(!rows.length)return '<div class="loading" style="color:var(--t3);padding:20px">Sin datos aún — los puntos aparecerán después del primer partido.</div>';
+  // Sort by points descending in case sheet isn't sorted
+  const sorted=[...rows].sort((a,b)=>(parseInt(b[2])||0)-(parseInt(a[2])||0));
+  return sorted.map((r,i)=>{
     const cls=i===0?'r1':i===1?'r2':'';
     const pct=parseFloat(r[4])||0;
     const medal=i===0?'👑':i===1?'🥈':'';
+    const pts=parseInt(r[2])||0;
+    const jug=parseInt(r[3])||0;
     return `<div class="tabla-row ${cls}" style="animation-delay:${i*.04}s">
-      <div class="pos-cell"><span class="pos">${r[0]||i+1}</span></div>
-      <div><div class="jname">${r[1]} ${medal}</div><div class="jsub">${r[3]||0} jugados</div></div>
-      <div class="pts">${r[2]||0}</div>
-      <div class="pct-wrap"><div class="pct-txt">${r[4]||'0%'}</div><div class="pct-bg"><div class="pct-fill" style="width:${pct}%"></div></div></div>
+      <div class="pos-cell"><span class="pos">${i+1}</span></div>
+      <div><div class="jname">${r[1]||'—'} ${medal}</div><div class="jsub">${jug} jugados</div></div>
+      <div class="pts">${pts}</div>
+      <div class="pct-wrap"><div class="pct-txt">${r[4]||'0%'}</div><div class="pct-bg"><div class="pct-fill" style="width:${Math.min(pct,100)}%"></div></div></div>
     </div>`;
   }).join('');
 }
 
 async function renderTabla(){
   try{
-    const txt=await fetchCSV(URLS.tabla);
+    const txt=await fetchCSV('186723370');
     const rows=parseCSV(txt).slice(1).filter(r=>r[1]&&r[1].trim());
-    const html=buildTablaHTML(rows);
-    document.getElementById('tablaBody').innerHTML=html;
+    document.getElementById('tablaBody').innerHTML=buildTablaHTML(rows);
   }catch(e){
-    document.getElementById('tablaBody').innerHTML='<div class="err">Error al cargar</div>';
+    document.getElementById('tablaBody').innerHTML='<div class="err">Error al cargar tabla — reintentando...</div>';
   }
 }
 
-// FAQ
+// ── FAQ BANNER ─────────────────────────────────────────────────────────
+function toggleFaq(){
+  const body=document.getElementById('faqBannerBody');
+  const chevron=document.getElementById('faqChevron');
+  const open=body.classList.toggle('open');
+  chevron.style.transform=open?'rotate(180deg)':'rotate(0deg)';
+}
+
+// ── FAQ MODAL ──────────────────────────────────────────────────────────
 function openFaq(){document.getElementById('faqModal').classList.add('open');}
 function closeFaq(){document.getElementById('faqModal').classList.remove('open');}
 document.getElementById('faqModal').addEventListener('click',function(e){if(e.target===this)closeFaq();});
 
-// CLOCK
+// ── CLOCK ──────────────────────────────────────────────────────────────
 function tickClock(){
   const d=new Date();
   const pad=n=>String(n).padStart(2,'0');
   document.getElementById('clock').textContent=`${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }
 
+// ── INIT ───────────────────────────────────────────────────────────────
+// ── INIT ───────────────────────────────────────────────────────────────
+// Render page structure immediately — no waiting
+renderHoy();
+renderResultados();
+
 async function refresh(){
-  try{
-    await loadResultados();
-    renderHoy();
-    renderResultados();
-    await renderTabla();
-  }catch(e){console.error(e);}
+  Promise.all([
+    loadResultados()
+      .then(()=>{ renderHoy(); renderResultados(); })
+      .catch(e=>console.log('resultados error:',e)),
+    renderTabla()
+      .catch(e=>console.log('tabla error:',e))
+  ]);
 }
 
 refresh();
