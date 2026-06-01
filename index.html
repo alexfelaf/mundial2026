@@ -16,7 +16,6 @@
   --bd:rgba(255,255,255,0.06);--bd2:rgba(255,255,255,0.1);
   --t:#EEF2F3;--t2:#8A9FA5;--t3:#4A5C61;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 100% 60% at 10% -10%,rgba(0,212,106,0.07) 0%,transparent 55%),radial-gradient(ellipse 70% 50% at 90% 110%,rgba(0,212,106,0.04) 0%,transparent 50%);pointer-events:none;z-index:0}
 
@@ -139,22 +138,8 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
 .faq-banner-body{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 20px}
 .faq-banner-body.open{max-height:1200px;padding:0 20px 16px}
 
-/* FAQ MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;display:none;align-items:flex-end;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal{background:#161C1E;border-top:1px solid rgba(255,255,255,0.1);border-radius:20px 20px 0 0;width:100%;max-width:100%;padding:0;position:relative;animation:slideup .3s ease;max-height:88vh;display:flex;flex-direction:column}
-@keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
-@media(min-width:600px){
-  .modal-overlay{align-items:center}
-  .modal{border-radius:16px;max-width:500px;border-top:none;border:1px solid rgba(255,255,255,0.1);animation:up .25s ease}
-  .modal-handle{display:none}
-}
-.modal-handle{width:36px;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin:12px auto 0}
-.modal-header{padding:16px 20px 12px;border-bottom:1px solid var(--bd);flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
-.modal-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--g);line-height:1}
-.modal-close{background:var(--s2);border:none;color:var(--t2);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.modal-close:hover{color:var(--t)}
-.modal-body{overflow-y:auto;padding:16px 20px 28px;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column}
+
+/* FAQ ITEMS */
 .faq-item{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
 .faq-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
 .faq-q{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t2);margin-bottom:6px}
@@ -170,53 +155,6 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
 </head>
 <body>
 
-<!-- FAQ MODAL -->
-<div class="modal-overlay" id="faqModal">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <div class="modal-title">Preguntas Frecuentes</div>
-      <button class="modal-close" onclick="closeFaq()">✕</button>
-    </div>
-    <div class="modal-body">
-    <div class="faq-item">
-      <div class="faq-q">¿Hasta cuándo puedo ingresar mi pronóstico?</div>
-      <div class="faq-a">El formulario cierra el <strong>11 de junio a las 13:50 (COL)</strong>, 10 minutos antes del primer partido México vs Sudáfrica.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">¿Qué se pronostica?</div>
-      <div class="faq-a">El resultado a los <strong>90 minutos</strong> en todas las fases. <strong>No incluye</strong> tiempo extra ni penales.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">¿Cómo se puntúa?</div>
-      <div class="faq-a"><strong>1 punto</strong> por cada pronóstico correcto.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">¿Cuánto vale participar?</div>
-      <div class="faq-a"><strong>$100.000 COP</strong> o su equivalente.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">¿Cómo se reparten los premios?</div>
-      <div class="faq-a">
-        <strong>1° puesto:</strong> 70% del total recaudado.<br>
-        <strong>2° puesto:</strong> 30% del total recaudado.<br><br>
-        En caso de empate en el <strong>1° puesto</strong>, el 100% se reparte en partes iguales entre los ganadores.<br>
-        En caso de empate en el <strong>2° puesto</strong>, el 30% se reparte en partes iguales entre los empatados.
-      </div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">¿Cómo pago?</div>
-      <div class="faq-a">
-        <strong>Nequi:</strong> 317 430 0861<br>
-        <strong>Bre-B:</strong> alexfelaf@gmail.com<br>
-        <strong>Zelle:</strong> 678 371 0427<br><br>
-        Enviá el comprobante de pago al grupo de WhatsApp para confirmar tu participación.
-      </div>
-    </div>
-    </div><!-- modal-body -->
-  </div><!-- modal -->
-</div><!-- faqModal -->
-
 <header>
   <div class="hdr">
     <div class="logo-wrap">
@@ -228,9 +166,8 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
         <a href="https://docs.google.com/spreadsheets/d/1KgHR06ucMFjhQvT2zCSg253rysVl21Xau47ag9_ZAxA/view" target="_blank" class="hdr-btn">📊 <span>Tabla</span></a>
         <a href="https://forms.gle/ZuRE5Vk8ewWK9Yy48" target="_blank" class="hdr-btn form">✏️ <span>Pronósticos</span></a>
         <a href="https://chat.whatsapp.com/KnDM4gE9ZR7Gr8ebYQebJr?mode=gi_t" target="_blank" class="hdr-btn wa">💬 <span>WhatsApp</span></a>
-        <button onclick="openFaq()" class="hdr-btn">❓ <span>FAQ</span></button>
       </div>
-      <div class="live-pill"><span class="live-dot"></span>En vivo</div>
+      <div class="live-pill" id="livePill" style="display:none"><span class="live-dot"></span>En vivo</div>
       <div class="clock" id="clock">--:--:--</div>
     </div>
   </div>
@@ -239,8 +176,8 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
 <div class="page">
 
   <!-- FAQ DESPLEGABLE -->
-  <div class="faq-banner" id="faqBanner">
-    <button class="faq-banner-btn" onclick="toggleFaq()" id="faqBannerBtn">
+  <div class="faq-banner">
+    <button class="faq-banner-btn" onclick="toggleFaq()">
       <span>❓ Preguntas Frecuentes</span>
       <span class="faq-chevron" id="faqChevron">▼</span>
     </button>
@@ -251,7 +188,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
       </div>
       <div class="faq-item">
         <div class="faq-q">¿Qué se pronostica?</div>
-        <div class="faq-a">El resultado a los <strong>90 minutos</strong> en todas las fases. <strong>No incluye</strong> tiempo extra ni penales.</div>
+        <div class="faq-a">El resultado a los <strong>90 minutos</strong>. <strong>No incluye</strong> tiempo extra ni penales.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q">¿Cómo se puntúa?</div>
@@ -266,8 +203,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
         <div class="faq-a">
           <strong>1° puesto:</strong> 70% del total recaudado.<br>
           <strong>2° puesto:</strong> 30% del total recaudado.<br><br>
-          En caso de empate en el <strong>1° puesto</strong>, el 100% se reparte en partes iguales.<br>
-          En caso de empate en el <strong>2° puesto</strong>, el 30% se reparte en partes iguales.
+          En caso de empate, el premio se reparte en partes iguales entre los empatados.
         </div>
       </div>
       <div class="faq-item" style="border-bottom:none;margin-bottom:0;padding-bottom:0">
@@ -276,7 +212,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
           <strong>Nequi:</strong> 317 430 0861<br>
           <strong>Bre-B:</strong> alexfelaf@gmail.com<br>
           <strong>Zelle:</strong> 678 371 0427<br><br>
-          Enviá el comprobante al grupo de WhatsApp para confirmar tu participación.
+          Enviá el comprobante al grupo de WhatsApp para confirmar.
         </div>
       </div>
     </div>
@@ -284,7 +220,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
 
   <div class="divider"></div>
 
-  <!-- CTA PRONÓSTICOS -->
+  <!-- CTA -->
   <a href="https://forms.gle/ZuRE5Vk8ewWK9Yy48" target="_blank" class="cta-banner">
     <div class="cta-icon">✏️</div>
     <div class="cta-text">
@@ -298,22 +234,14 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
 
   <div class="grid">
 
-    <!-- IZQUIERDA -->
     <div class="col-left">
-
-      <!-- HOY -->
       <div class="stitle">⚽ Partidos de <span>Hoy</span></div>
       <div id="hoyBody"><div class="hoy-empty">Cargando partidos...</div></div>
-
       <div class="divider"></div>
-
-      <!-- RESULTADOS -->
       <div class="stitle">Todos los <span>Resultados</span> <small>Fase de grupos</small></div>
       <div id="resBody"></div>
-
     </div>
 
-    <!-- DERECHA -->
     <div class="col-right">
       <div class="stitle">Tabla de <span>Posiciones</span></div>
       <div class="tabla-box">
@@ -325,6 +253,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
     </div>
 
   </div>
+
 </div>
 
 <script>
@@ -508,11 +437,16 @@ function renderHoy(){
   const hoy=getFechaHoy();
   const ps=PD.filter(p=>p.f===hoy);
   const el=document.getElementById('hoyBody');
+  const pill=document.getElementById('livePill');
   if(!ps.length){
     const prox=FORD.find(f=>PD.some(p=>p.f===f&&!getScore(p.n)));
-    el.innerHTML=`<div class="hoy-empty">No hay partidos hoy · Próxima fecha: <strong>${prox||'por definir'}</strong></div>`;
+    el.innerHTML=`<div class="hoy-empty">No hay partidos hoy · Próxima fecha: <strong>${prox||'¡Ya terminó el torneo!'}</strong></div>`;
+    if(pill) pill.style.display='none';
     return;
   }
+  // Show live pill only if at least one match has no result yet (still playing or upcoming today)
+  const hayEnCurso = ps.some(p=>!getScore(p.n));
+  if(pill) pill.style.display = hayEnCurso ? 'flex' : 'none';
   el.innerHTML=`<div class="hoy-cards">${ps.map((p,i)=>{
     const sc=getScore(p.n);
     const fin=!!sc;
@@ -552,16 +486,18 @@ function renderResultados(){
 // Hoja Tabla: col0=Pos, col1=Nombre, col2=Puntos, col3=Jugados, col4=%
 function buildTablaHTML(rows){
   if(!rows.length)return '<div class="loading" style="color:var(--t3);padding:20px">Sin datos aún — los puntos aparecerán después del primer partido.</div>';
-  // Sort by points descending in case sheet isn't sorted
   const sorted=[...rows].sort((a,b)=>(parseInt(b[2])||0)-(parseInt(a[2])||0));
+  let pos=1;
   return sorted.map((r,i)=>{
-    const cls=i===0?'r1':i===1?'r2':'';
-    const pct=parseFloat(r[4])||0;
-    const medal=i===0?'👑':i===1?'🥈':'';
+    // Shared position: only advance pos when points actually drop
+    if(i>0 && (parseInt(sorted[i][2])||0) < (parseInt(sorted[i-1][2])||0)) pos=i+1;
+    const cls=pos===1?'r1':pos===2?'r2':'';
+    const medal=pos===1?'👑':pos===2?'🥈':'';
     const pts=parseInt(r[2])||0;
     const jug=parseInt(r[3])||0;
+    const pct=parseFloat(r[4])||0;
     return `<div class="tabla-row ${cls}" style="animation-delay:${i*.04}s">
-      <div class="pos-cell"><span class="pos">${i+1}</span></div>
+      <div class="pos-cell"><span class="pos">${pos}</span></div>
       <div><div class="jname">${r[1]||'—'} ${medal}</div><div class="jsub">${jug} jugados</div></div>
       <div class="pts">${pts}</div>
       <div class="pct-wrap"><div class="pct-txt">${r[4]||'0%'}</div><div class="pct-bg"><div class="pct-fill" style="width:${Math.min(pct,100)}%"></div></div></div>
@@ -586,11 +522,6 @@ function toggleFaq(){
   const open=body.classList.toggle('open');
   chevron.style.transform=open?'rotate(180deg)':'rotate(0deg)';
 }
-
-// ── FAQ MODAL ──────────────────────────────────────────────────────────
-function openFaq(){document.getElementById('faqModal').classList.add('open');}
-function closeFaq(){document.getElementById('faqModal').classList.remove('open');}
-document.getElementById('faqModal').addEventListener('click',function(e){if(e.target===this)closeFaq();});
 
 // ── CLOCK ──────────────────────────────────────────────────────────────
 function tickClock(){
