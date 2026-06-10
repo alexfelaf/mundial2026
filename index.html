@@ -258,6 +258,9 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
 
 <script>
 const SHEET_BASE='https://docs.google.com/spreadsheets/d/e/2PACX-1vSZ22q4PrBoUXSqDCJtw93VGCEkG9hHEz1uumZ0vmpVh8zfUSJ8I4O1Bz8E3ihec236l3SO91tkKQpI/pub';
+const PAGOS_GID='777125646'; // hoja Pagos
+
+let pagosMap={}; // {nombre: true/false} true=pagó
 // gid 1059730197 = Resultados, gid 186723370 = Tabla
 const URLS={
   results: SHEET_BASE+'?gid=1059730197&single=true&output=csv',
@@ -496,13 +499,29 @@ function buildTablaHTML(rows){
     const pts=parseInt(r[2])||0;
     const jug=parseInt(r[3])||0;
     const pct=parseFloat((r[4]||'0').toString().replace('%',''))||0;
+    const nombre=r[1]||'—';
+    const pago=pagosMap[nombre.trim()];
+    const nameColor=pago===true?'var(--g)':pago===false?'#FF5555':'var(--t)';
+    const payIcon=pago===true?' ✅':pago===false?' ❌':'';
     return `<div class="tabla-row ${cls}" style="animation-delay:${i*.04}s">
       <div class="pos-cell"><span class="pos">${pos}</span></div>
-      <div><div class="jname">${r[1]||'—'} ${medal}</div><div class="jsub">${jug} jugados</div></div>
+      <div><div class="jname" style="color:${nameColor}">${nombre}${payIcon} ${medal}</div><div class="jsub">${jug} jugados</div></div>
       <div class="pts">${pts}</div>
       <div class="pct-wrap"><div class="pct-txt">${r[4]||'0%'}</div><div class="pct-bg"><div class="pct-fill" style="width:${Math.min(pct,100)}%"></div></div></div>
     </div>`;
   }).join('');
+}
+
+async function loadPagos(){
+  if(!PAGOS_GID) return;
+  try{
+    const txt=await fetchCSV(PAGOS_GID);
+    const rows=parseCSV(txt).slice(1);
+    pagosMap={};
+    rows.forEach(r=>{
+      if(r[0]) pagosMap[r[0].trim()]=(r[1]||'').trim().toLowerCase()==='sí';
+    });
+  }catch(e){ console.log('pagos error:',e); }
 }
 
 async function renderTabla(){
@@ -541,6 +560,8 @@ async function refresh(){
     loadResultados()
       .then(()=>{ renderHoy(); renderResultados(); })
       .catch(e=>console.log('resultados error:',e)),
+    loadPagos()
+      .catch(e=>console.log('pagos error:',e)),
     renderTabla()
       .catch(e=>console.log('tabla error:',e))
   ]);
