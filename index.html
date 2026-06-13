@@ -380,27 +380,44 @@ function getFechaHoy(){
   return `${dias[d.getDay()]} ${d.getDate()} ${meses[d.getMonth()]}`;
 }
 
-// ── FETCH CSV with multiple proxies + timeout ──────────────────────────
+// ── FETCH CSV — parallel race across proxies ───────────────────────────
 async function fetchCSV(gid){
   const sheetUrl=SHEET_BASE+'?gid='+gid+'&single=true&output=csv&t='+Date.now();
   const proxies=[
     'https://api.allorigins.win/raw?url=',
     'https://corsproxy.io/?',
     'https://api.codetabs.com/v1/proxy?quest=',
+    'https://corsproxy.io/?url=',
   ];
-  for(const p of proxies){
+
+  const attempt=async(p)=>{
+    const ctrl=new AbortController();
+    const timer=setTimeout(()=>ctrl.abort(),6000);
     try{
-      const ctrl=new AbortController();
-      const timer=setTimeout(()=>ctrl.abort(),5000);
-      const r=await fetch(p+encodeURIComponent(sheetUrl),{signal:ctrl.signal});
+      const r=await fetch(p+encodeURIComponent(sheetUrl),{signal:ctrl.signal,cache:'no-store'});
       clearTimeout(timer);
-      if(r.ok){
-        const t=await r.text();
-        if(t&&t.length>10&&!t.trim().startsWith('<'))return t;
-      }
-    }catch(e){console.log('proxy failed:',p);}
-  }
-  throw new Error('fetch failed');
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const t=await r.text();
+      if(!t||t.length<10||t.trim().startsWith('<')) throw new Error('bad response');
+      return t;
+    }catch(e){
+      clearTimeout(timer);
+      throw e;
+    }
+  };
+
+  // Try all proxies in parallel, return first success
+  return new Promise((resolve,reject)=>{
+    let done=false, fails=0;
+    proxies.forEach(p=>{
+      attempt(p).then(t=>{
+        if(!done){ done=true; resolve(t); }
+      }).catch(()=>{
+        fails++;
+        if(fails===proxies.length && !done) reject(new Error('all proxies failed'));
+      });
+    });
+  });
 }
 
 function parseCSV(txt){
@@ -447,49 +464,53 @@ function matchesPartido(m, local, visita){
 }
 
 async function fetchLiveScores(){
-  const proxies=['https://api.allorigins.win/raw?url=','https://corsproxy.io/?'];
-  // Pass token as query param since proxies don't forward custom headers
+  const proxies=['https://api.allorigins.win/raw?url=','https://corsproxy.io/?','https://api.codetabs.com/v1/proxy?quest='];
   const url='https://api.football-data.org/v4/competitions/2000/matches?X-Auth-Token='+API_TOKEN;
-  for(const p of proxies){
+
+  const attempt=async(p)=>{
+    const ctrl=new AbortController();
+    const timer=setTimeout(()=>ctrl.abort(),6000);
     try{
-      const ctrl=new AbortController();
-      const timer=setTimeout(()=>ctrl.abort(),6000);
       const r=await fetch(p+encodeURIComponent(url),{signal:ctrl.signal,cache:'no-store'});
       clearTimeout(timer);
-      if(r.ok){
-        const t=await r.text();
-        if(t&&t.length>100&&!t.trim().startsWith('<')){
-          const data=JSON.parse(t);
-          if(!data.matches) continue;
-          liveScores={};
-          data.matches.forEach(m=>{
-            PD.forEach(pd=>{
-              if(matchesPartido(m,pd.l,pd.v)){
-                // For in-play use currentScore if available, else halfTime
-                const ft=m.score.fullTime;
-                const ht=m.score.halfTime;
-                const curr=m.score.currentScore; // some APIs provide this
-                let gl=ft.home, gv=ft.away;
-                if((m.status==='IN_PLAY'||m.status==='PAUSED')){
-                  // Use fullTime during play (it gets updated live by football-data.org)
-                  gl = ft.home!==null ? ft.home : (ht.home||0);
-                  gv = ft.away!==null ? ft.away : (ht.away||0);
-                }
-                liveScores[pd.n]={
-                  gl: gl!==null?gl:null,
-                  gv: gv!==null?gv:null,
-                  status: m.status,
-                };
-                console.log('P'+pd.n+' '+pd.l+' '+gl+'-'+gv+' '+pd.v+' ['+m.status+']');
-              }
-            });
-          });
-          return;
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const t=await r.text();
+      if(!t||t.length<100||t.trim().startsWith('<')) throw new Error('bad response');
+      return JSON.parse(t);
+    }catch(e){ clearTimeout(timer); throw e; }
+  };
+
+  let data=null;
+  await new Promise((resolve)=>{
+    let done=false, fails=0;
+    proxies.forEach(p=>{
+      attempt(p).then(d=>{
+        if(!done){ done=true; data=d; resolve(); }
+      }).catch(()=>{
+        fails++;
+        if(fails===proxies.length) resolve(); // all failed, continue with empty
+      });
+    });
+  });
+
+  if(!data||!data.matches){ console.log('Live scores unavailable'); return; }
+
+  liveScores={};
+  data.matches.forEach(m=>{
+    PD.forEach(pd=>{
+      if(matchesPartido(m,pd.l,pd.v)){
+        const ft=m.score.fullTime;
+        const ht=m.score.halfTime;
+        let gl=ft.home, gv=ft.away;
+        if((m.status==='IN_PLAY'||m.status==='PAUSED')){
+          gl = ft.home!==null ? ft.home : (ht&&ht.home!==null?ht.home:0);
+          gv = ft.away!==null ? ft.away : (ht&&ht.away!==null?ht.away:0);
         }
+        liveScores[pd.n]={ gl, gv, status:m.status };
+        if(m.status!=='SCHEDULED') console.log('P'+pd.n+' '+pd.l+' '+gl+'-'+gv+' ['+m.status+']');
       }
-    }catch(e){console.log('live fetch failed',e);}
-  }
-  console.log('All live score proxies failed');
+    });
+  });
 }
 
 function getLiveScore(num){
@@ -511,7 +532,7 @@ function getLiveScore(num){
 let resultadosMap={};
 
 async function loadResultados(){
-  const txt=await fetchCSV('1059730197');
+  const txt=await fetchCSV('1603187919');
   const rows=parseCSV(txt).slice(1);
   resultadosMap={};
   rows.forEach(r=>{
