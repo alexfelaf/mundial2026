@@ -234,6 +234,9 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
       <div class="divider"></div>
       <div class="stitle">Todos los <span>Resultados</span> <small>Fase de grupos</small></div>
       <div id="resBody"></div>
+      <div class="divider"></div>
+      <div class="stitle">📅 <span>Calendario</span> <small>Próximos partidos</small></div>
+      <div id="calBody"></div>
     </div>
 
     <div class="col-right">
@@ -487,13 +490,22 @@ async function fetchLiveScores(){
   data.matches.forEach(m=>{
     PD.forEach(pd=>{
       if(matchesPartido(m,pd.l,pd.v)){
-        const ft=m.score.fullTime;
-        const ht=m.score.halfTime;
-        let gl=ft.home, gv=ft.away;
-        if((m.status==='IN_PLAY'||m.status==='PAUSED')){
-          gl = ft.home!==null ? ft.home : (ht&&ht.home!==null?ht.home:0);
-          gv = ft.away!==null ? ft.away : (ht&&ht.away!==null?ht.away:0);
+        const ft=m.score.fullTime||{};
+        const ht=m.score.halfTime||{};
+        const rt=m.score.regularTime||{}; // some versions use this during play
+        let gl=null, gv=null;
+
+        if(m.status==='FINISHED'){
+          // Use fullTime for finished matches
+          gl = ft.home!==null ? ft.home : rt.home;
+          gv = ft.away!==null ? ft.away : rt.away;
+        } else if(m.status==='IN_PLAY'||m.status==='PAUSED'){
+          // football-data.org free tier: fullTime has current score during play
+          // fallback to halfTime if fullTime is null (some matches)
+          gl = ft.home!==null ? ft.home : (ht.home!==null&&ht.home!==undefined ? ht.home : 0);
+          gv = ft.away!==null ? ft.away : (ht.away!==null&&ht.away!==undefined ? ht.away : 0);
         }
+
         liveScores[pd.n]={ gl, gv, status:m.status };
         if(m.status!=='SCHEDULED') console.log('P'+pd.n+' '+pd.l+' '+gl+'-'+gv+' ['+m.status+']');
       }
@@ -508,8 +520,10 @@ function getLiveScore(num){
       if(live.gl!==null) return {...live, fin:true, live:false};
       return {gl:'?',gv:'?', fin:true, live:false, pending:true};
     }
-    if((live.status==='IN_PLAY'||live.status==='PAUSED')&&live.gl!==null)
-      return {...live, fin:false, live:true};
+    if(live.status==='IN_PLAY'||live.status==='PAUSED'){
+      if(live.gl!==null && live.gv!==null) return {...live, fin:false, live:true};
+      return {gl:null, gv:null, fin:false, live:true}; // live but score not yet available
+    }
   }
   const sc=getScore(num);
   if(sc) return {gl:sc.gl, gv:sc.gv, fin:true, live:false};
@@ -560,7 +574,8 @@ function renderHoy(){
     if(fin){
       centro=`<div class="score">${sc.gl} - ${sc.gv}</div><div class="fin-badge">Final</div>`;
     } else if(live){
-      centro=`<div class="score live-score">⚽ ${sc.gl} - ${sc.gv}</div><div class="live-badge">En vivo</div>`;
+      const marcador = (sc.gl!==null&&sc.gv!==null) ? `${sc.gl} - ${sc.gv}` : '';
+      centro=`<div class="score live-score">⚽ ${marcador}</div><div class="live-badge">En vivo</div>`;
     } else {
       centro=`<div class="vstext">VS</div>`;
     }
@@ -577,20 +592,55 @@ function renderResultados(){
   const el=document.getElementById('resBody');
   const pf={};
   PD.forEach(p=>{if(!pf[p.f])pf[p.f]=[];pf[p.f].push(p);});
-  el.innerHTML=FORD.map(fecha=>{
-    const ps=pf[fecha]||[];
+  // Reverse order: most recent date first, Partido 1 (oldest) last
+  // Only show matches that have started or finished (have a live/final score)
+  el.innerHTML=[...FORD].reverse().map(fecha=>{
+    const ps=(pf[fecha]||[]).filter(p=>{
+      const sc=getLiveScore(p.n);
+      return sc && (sc.fin || sc.live);
+    });
+    if(!ps.length) return '';
     const cards=ps.map(p=>{
       const sc=getLiveScore(p.n);
       const fin=sc&&sc.fin;
       const live=sc&&sc.live;
+      const marcadorLive=(live&&sc.gl!==null&&sc.gv!==null)?`⚽ ${sc.gl} - ${sc.gv}`:'⚽ En vivo';
       return `<div class="res-card ${fin?'fin':live?'live':''}">
         <div class="res-eq"><span class="res-flag">${flag(p.l)}</span><span class="res-name">${p.l}</span></div>
-        <div class="res-mid">${fin?`<div class="res-score">${sc.gl} - ${sc.gv}</div>`:live?`<div class="res-score" style="color:var(--y)">⚽ ${sc.gl} - ${sc.gv}</div>`:`<div class="res-vs">VS</div><div class="res-hora">${p.h}</div>`}</div>
+        <div class="res-mid">${fin?`<div class="res-score">${sc.gl} - ${sc.gv}</div>`:live?`<div class="res-score" style="color:var(--y)">${marcadorLive}</div>`:`<div class="res-vs">VS</div><div class="res-hora">${p.h}</div>`}</div>
         <div class="res-eq r"><span class="res-flag">${flag(p.v)}</span><span class="res-name">${p.v}</span></div>
       </div>`;
     }).join('');
     return `<div class="fecha-hdr">${fecha}</div><div class="res-list">${cards}</div>`;
   }).join('');
+  if(!el.innerHTML.trim()){
+    el.innerHTML='<div class="hoy-empty">Aún no hay partidos disputados</div>';
+  }
+}
+
+// ── CALENDARIO (próximos partidos) ──────────────────────────────────────
+function renderCalendario(){
+  const el=document.getElementById('calBody');
+  if(!el) return;
+  const pf={};
+  PD.forEach(p=>{if(!pf[p.f])pf[p.f]=[];pf[p.f].push(p);});
+  // Forward order: next matches first
+  el.innerHTML=FORD.map(fecha=>{
+    const ps=(pf[fecha]||[]).filter(p=>{
+      const sc=getLiveScore(p.n);
+      return !sc || (!sc.fin && !sc.live); // only matches not started
+    });
+    if(!ps.length) return '';
+    const cards=ps.map(p=>`<div class="res-card">
+        <div class="res-eq"><span class="res-flag">${flag(p.l)}</span><span class="res-name">${p.l}</span></div>
+        <div class="res-mid"><div class="res-vs">VS</div><div class="res-hora">${p.h}</div></div>
+        <div class="res-eq r"><span class="res-flag">${flag(p.v)}</span><span class="res-name">${p.v}</span></div>
+      </div>`).join('');
+    return `<div class="fecha-hdr">${fecha}</div><div class="res-list">${cards}</div>`;
+  }).join('');
+  if(!el.innerHTML.trim()){
+    el.innerHTML='<div class="hoy-empty">No quedan partidos pendientes</div>';
+  }
 }
 
 // ── TABLA DE POSICIONES ────────────────────────────────────────────────
@@ -667,11 +717,12 @@ function tickClock(){
 // Render page structure immediately — no waiting
 renderHoy();
 renderResultados();
+renderCalendario();
 
 async function refresh(){
   Promise.all([
     loadResultados()
-      .then(()=>{ renderHoy(); renderResultados(); })
+      .then(()=>{ renderHoy(); renderResultados(); renderCalendario(); })
       .catch(e=>console.log('resultados error:',e)),
     renderTabla()
       .catch(e=>console.log('tabla error:',e))
@@ -682,6 +733,7 @@ async function refreshLive(){
   await fetchLiveScores();
   renderHoy();
   renderResultados();
+  renderCalendario();
 }
 
 refresh();
