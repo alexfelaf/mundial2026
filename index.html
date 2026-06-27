@@ -152,6 +152,14 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
 .res-card.live{background:rgba(255,60,60,.04)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
 
+/* BRACKET */
+.bracket-grid{display:flex;flex-direction:column;gap:8px;padding:4px 0}
+.b-match{border-radius:10px;padding:10px 14px;border:1px solid var(--border)}
+.b-match.confirmed{background:rgba(0,255,136,.04);border-color:rgba(0,255,136,.2)}
+.b-match.pending{background:rgba(255,200,0,.04);border-color:rgba(255,200,0,.15)}
+.b-team{font-size:13px;font-weight:600;color:var(--t);padding:3px 0}
+.b-vs{font-size:10px;color:var(--t3);text-align:center;padding:4px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:4px 0}
+
 /* LOADING/ERROR */
 .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 0;gap:12px;color:var(--t3);font-size:12px}
 .spin{width:22px;height:22px;border:2px solid var(--bd2);border-top-color:var(--g);border-radius:50%;animation:spin .7s linear infinite}
@@ -235,8 +243,109 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
       <div class="stitle">Todos los <span>Resultados</span> <small>Fase de grupos</small></div>
       <div id="resBody"></div>
       <div class="divider"></div>
-      <div class="stitle">📅 <span>Calendario</span> <small>Próximos partidos</small></div>
-      <div id="calBody"></div>
+      <div class="stitle">🏆 <span>16avos de Final</span> <small>Round of 32 · Jun 28 – Jul 3</small></div>
+      <div id="bracketBody">
+        <div class="bracket-grid">
+
+          <div class="b-match confirmed">
+            <div class="b-team">🇿🇦 Sudáfrica</div>
+            <div class="b-vs">Dom 29 jun · 16:00 COL · SoFi Stadium, Los Ángeles</div>
+            <div class="b-team">🇨🇦 Canadá</div>
+          </div>
+
+          <div class="b-match confirmed">
+            <div class="b-team">🇧🇷 Brasil</div>
+            <div class="b-vs">Dom 29 jun · 14:00 COL · NRG Stadium, Houston</div>
+            <div class="b-team">🇯🇵 Japón</div>
+          </div>
+
+          <div class="b-match confirmed">
+            <div class="b-team">🇩🇪 Alemania</div>
+            <div class="b-vs">Dom 29 jun · 17:30 COL · Gillette Stadium, Boston</div>
+            <div class="b-team">3° Grupo A/B/C/D/F*</div>
+          </div>
+
+          <div class="b-match confirmed">
+            <div class="b-team">🇳🇱 Países Bajos</div>
+            <div class="b-vs">Dom 29 jun · 22:00 COL · Est. BBVA, Monterrey</div>
+            <div class="b-team">🇲🇦 Marruecos</div>
+          </div>
+
+          <div class="b-match confirmed">
+            <div class="b-team">🇨🇮 Costa de Marfil</div>
+            <div class="b-vs">Lun 30 jun · 14:00 COL · AT&amp;T Stadium, Dallas</div>
+            <div class="b-team">🇳🇴 Noruega</div>
+          </div>
+
+          <div class="b-match confirmed">
+            <div class="b-team">🇫🇷 Francia</div>
+            <div class="b-vs">Lun 30 jun · 18:00 COL · MetLife Stadium, Nueva Jersey</div>
+            <div class="b-team">🇸🇪 Suecia*</div>
+          </div>
+
+          <div class="b-match confirmed">
+            <div class="b-team">🇲🇽 México</div>
+            <div class="b-vs">Lun 30 jun · 22:00 COL · Est. Azteca, Ciudad de México</div>
+            <div class="b-team">3° Grupo C/E/F/H/I*</div>
+          </div>
+
+          <div class="b-match pending">
+            <div class="b-team">🇬🇧 Inglaterra / 🇬🇭 Ghana / 🇭🇷 Croacia*</div>
+            <div class="b-vs">Mié 1 jul · 13:00 COL · Mercedes-Benz, Atlanta</div>
+            <div class="b-team">3° Grupo E/H/I/J/K*</div>
+          </div>
+
+          <div class="b-match pending">
+            <div class="b-team">🇧🇪 Bélgica / 🇪🇬 Egipto*</div>
+            <div class="b-vs">Mié 1 jul · 17:00 COL · Lumen Field, Seattle</div>
+            <div class="b-team">3° Grupo A/E/H/I/J*</div>
+          </div>
+
+          <div class="b-match confirmed">
+            <div class="b-team">🇺🇸 EE.UU.</div>
+            <div class="b-vs">Mié 1 jul · 21:00 COL · Levi's Stadium, San Francisco</div>
+            <div class="b-team">🇧🇦 Bosnia-Herzegovina</div>
+          </div>
+
+          <div class="b-match pending">
+            <div class="b-team">🇪🇸 España</div>
+            <div class="b-vs">Jue 2 jul · 16:00 COL · SoFi Stadium, Los Ángeles</div>
+            <div class="b-team">🇩🇿 Argelia / 🇦🇹 Austria*</div>
+          </div>
+
+          <div class="b-match pending">
+            <div class="b-team">🇵🇹 Portugal / 🇨🇴 Colombia*</div>
+            <div class="b-vs">Jue 2 jul · 20:00 COL · BMO Field, Toronto</div>
+            <div class="b-team">🇭🇷 Croacia / 🇬🇭 Ghana*</div>
+          </div>
+
+          <div class="b-match confirmed">
+            <div class="b-team">🇨🇭 Suiza</div>
+            <div class="b-vs">Jue 2 jul · 00:00 COL · BC Place, Vancouver</div>
+            <div class="b-team">3° Grupo E/F/G/I/J*</div>
+          </div>
+
+          <div class="b-match confirmed">
+            <div class="b-team">🇦🇺 Australia / 🇪🇬 Egipto*</div>
+            <div class="b-vs">Vie 3 jul · 15:00 COL · AT&amp;T Stadium, Dallas</div>
+            <div class="b-team">🇵🇾 Paraguay*</div>
+          </div>
+
+          <div class="b-match confirmed">
+            <div class="b-team">🇦🇷 Argentina</div>
+            <div class="b-vs">Vie 3 jul · 19:00 COL · Hard Rock Stadium, Miami</div>
+            <div class="b-team">🇨🇻 Cabo Verde</div>
+          </div>
+
+          <div class="b-match pending">
+            <div class="b-team">🇵🇹 Portugal / 🇨🇴 Colombia*</div>
+            <div class="b-vs">Vie 3 jul · 22:30 COL · Arrowhead Stadium, Kansas City</div>
+            <div class="b-team">3° Grupo D/E/I/J/L*</div>
+          </div>
+
+        </div>
+        <div style="font-size:10px;color:var(--t3);padding:8px 4px">* pendiente confirmación final — grupos K y L se definen hoy Jun 27</div>
+      </div>
     </div>
 
     <div class="col-right">
@@ -340,17 +449,17 @@ const PD=[
   {n:51,f:"Mié 24 jun",h:"20:00",s:"Est. Azteca, Cd. México",g:"A",l:"Chequia",v:"México"},
   {n:52,f:"Mié 24 jun",h:"20:00",s:"Est. BBVA, Monterrey",g:"A",l:"Sudáfrica",v:"Corea del Sur"},
   {n:53,f:"Mié 24 jun",h:"17:00",s:"Hard Rock Stadium, Miami",g:"C",l:"Escocia",v:"Brasil"},
-  {n:54,f:"Mié 24 jun",h:"17:00",s:"Mercedes-Benz Stadium, Atlanta",g:"C",l:"Marruecos",v:"Haití"},
+  {n:54,f:"Jue 25 jun",h:"21:00",s:"Levi's Stadium, San Francisco",g:"D",l:"Paraguay",v:"Australia"},
   {n:55,f:"Jue 25 jun",h:"15:00",s:"MetLife Stadium, Nueva Jersey",g:"E",l:"Ecuador",v:"Alemania"},
   {n:56,f:"Jue 25 jun",h:"15:00",s:"Lincoln Financial, Philadelphia",g:"E",l:"Curazao",v:"Costa de Marfil"},
   {n:57,f:"Jue 25 jun",h:"18:00",s:"AT&T Stadium, Dallas",g:"F",l:"Japón",v:"Suecia"},
   {n:58,f:"Jue 25 jun",h:"18:00",s:"Arrowhead Stadium, Kansas City",g:"F",l:"Túnez",v:"Países Bajos"},
-  {n:59,f:"Jue 25 jun",h:"21:00",s:"SoFi Stadium, Los Ángeles",g:"D",l:"Turquía",v:"EE.UU."},
-  {n:60,f:"Jue 25 jun",h:"21:00",s:"Levi's Stadium, San Francisco",g:"D",l:"Paraguay",v:"Australia"},
-  {n:61,f:"Vie 26 jun",h:"14:00",s:"Gillette Stadium, Boston",g:"I",l:"Noruega",v:"Francia"},
-  {n:62,f:"Vie 26 jun",h:"14:00",s:"BMO Field, Toronto",g:"I",l:"Senegal",v:"Irak"},
-  {n:63,f:"Vie 26 jun",h:"19:00",s:"NRG Stadium, Houston",g:"H",l:"Cabo Verde",v:"Arabia Saudita"},
-  {n:64,f:"Vie 26 jun",h:"19:00",s:"Est. Akron, Guadalajara",g:"H",l:"Uruguay",v:"España"},
+  {n:59,f:"Vie 26 jun",h:"17:00",s:"Mercedes-Benz Stadium, Atlanta",g:"C",l:"Marruecos",v:"Haití"},
+  {n:60,f:"Vie 26 jun",h:"21:00",s:"SoFi Stadium, Los Ángeles",g:"D",l:"Turquía",v:"EE.UU."},
+  {n:61,f:"Vie 26 jun",h:"19:00",s:"NRG Stadium, Houston",g:"H",l:"Cabo Verde",v:"Arabia Saudita"},
+  {n:62,f:"Vie 26 jun",h:"19:00",s:"Est. Akron, Guadalajara",g:"H",l:"Uruguay",v:"España"},
+  {n:63,f:"Vie 26 jun",h:"14:00",s:"Gillette Stadium, Boston",g:"I",l:"Noruega",v:"Francia"},
+  {n:64,f:"Vie 26 jun",h:"14:00",s:"BMO Field, Toronto",g:"I",l:"Senegal",v:"Irak"},
   {n:65,f:"Vie 26 jun",h:"22:00",s:"Lumen Field, Seattle",g:"G",l:"Egipto",v:"Irán"},
   {n:66,f:"Vie 26 jun",h:"22:00",s:"BC Place, Vancouver",g:"G",l:"Nueva Zelanda",v:"Bélgica"},
   {n:67,f:"Sáb 27 jun",h:"21:00",s:"Arrowhead Stadium, Kansas City",g:"J",l:"Argelia",v:"Austria"},
