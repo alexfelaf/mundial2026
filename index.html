@@ -224,14 +224,13 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
   <div class="divider"></div>
 
   <!-- CTA -->
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdwJtSxvfp3laxR5TsrKNEsjPnNHC3u69AffIOuGAt4V_TFAw/viewform" target="_blank" class="cta-banner" id="ctaBanner">
-    <div class="cta-icon">✏️</div>
+  <div class="cta-banner" style="opacity:0.5;cursor:default;pointer-events:none">
+    <div class="cta-icon">⏳</div>
     <div class="cta-text">
-      <div class="cta-title">¡Ingresá tu pronóstico — 16avos de Final!</div>
-      <div class="cta-sub">Cierra 10 min antes del primer partido · Dom 28 jun · 13:50 COL</div>
+      <div class="cta-title">Pronósticos 16avos — Cerrado</div>
+      <div class="cta-sub">Pronósticos de 8avos de Final pendientes · abrirán cuando se definan los cruces</div>
     </div>
-    <div class="cta-arrow">→</div>
-  </a>
+  </div>
 
   <div class="divider"></div>
 
@@ -242,6 +241,9 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
       <div id="hoyBody"><div class="hoy-empty">Cargando partidos...</div></div>
       <div class="divider"></div>
       <div class="stitle">🏆 <span>16avos de Final</span> <small>Round of 32 · Jun 28 – Jul 3</small></div>
+      <div style="background:rgba(255,200,0,.08);border:1px solid rgba(255,200,0,.25);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--y)">
+        ⏳ <strong>8avos de Final (Round of 16)</strong> — cruces pendientes de definir según resultados de 16avos
+      </div>
       <div id="bracketBody">
         <div class="bracket-grid">
 
@@ -469,9 +471,26 @@ const PD=[
   {n:70,f:"Sáb 27 jun",h:"18:30",s:"Mercedes-Benz Stadium, Atlanta",g:"K",l:"R.D. Congo",v:"Uzbekistán"},
   {n:71,f:"Sáb 27 jun",h:"16:00",s:"MetLife Stadium, Nueva Jersey",g:"L",l:"Panamá",v:"Inglaterra"},
   {n:72,f:"Sáb 27 jun",h:"16:00",s:"Lincoln Financial, Philadelphia",g:"L",l:"Croacia",v:"Ghana"},
+  // ── 16avos de Final ──────────────────────────────────────────────
+  {n:73,f:"Dom 28 jun",h:"14:00",s:"SoFi Stadium, Los Ángeles",g:"R32",l:"Sudáfrica",v:"Canadá"},
+  {n:74,f:"Lun 29 jun",h:"12:00",s:"NRG Stadium, Houston",g:"R32",l:"Brasil",v:"Japón"},
+  {n:75,f:"Lun 29 jun",h:"15:30",s:"Gillette Stadium, Boston",g:"R32",l:"Alemania",v:"Paraguay"},
+  {n:76,f:"Lun 29 jun",h:"20:00",s:"Est. BBVA, Monterrey",g:"R32",l:"Países Bajos",v:"Marruecos"},
+  {n:77,f:"Mar 30 jun",h:"12:00",s:"AT&T Stadium, Dallas",g:"R32",l:"Costa de Marfil",v:"Noruega"},
+  {n:78,f:"Mar 30 jun",h:"16:00",s:"MetLife Stadium, Nueva Jersey",g:"R32",l:"Francia",v:"Suecia"},
+  {n:79,f:"Mar 30 jun",h:"20:00",s:"Est. Azteca, Ciudad de México",g:"R32",l:"México",v:"Ecuador"},
+  {n:80,f:"Mié 1 jul",h:"11:00",s:"Mercedes-Benz Stadium, Atlanta",g:"R32",l:"Inglaterra",v:"R.D. Congo"},
+  {n:81,f:"Mié 1 jul",h:"15:00",s:"Lumen Field, Seattle",g:"R32",l:"Bélgica",v:"Senegal"},
+  {n:82,f:"Mié 1 jul",h:"19:00",s:"Levi's Stadium, San Francisco",g:"R32",l:"EE.UU.",v:"Bosnia-Herzegovina"},
+  {n:83,f:"Jue 2 jul",h:"14:00",s:"SoFi Stadium, Los Ángeles",g:"R32",l:"España",v:"Austria"},
+  {n:84,f:"Jue 2 jul",h:"18:00",s:"BMO Field, Toronto",g:"R32",l:"Portugal",v:"Croacia"},
+  {n:85,f:"Jue 2 jul",h:"22:00",s:"BC Place, Vancouver",g:"R32",l:"Suiza",v:"Argelia"},
+  {n:86,f:"Vie 3 jul",h:"13:00",s:"AT&T Stadium, Dallas",g:"R32",l:"Australia",v:"Egipto"},
+  {n:87,f:"Vie 3 jul",h:"17:00",s:"Hard Rock Stadium, Miami",g:"R32",l:"Argentina",v:"Cabo Verde"},
+  {n:88,f:"Vie 3 jul",h:"20:30",s:"Arrowhead Stadium, Kansas City",g:"R32",l:"Colombia",v:"Ghana"},
 ];
 
-const FORD=["Jue 11 jun","Vie 12 jun","Sáb 13 jun","Dom 14 jun","Lun 15 jun","Mar 16 jun","Mié 17 jun","Jue 18 jun","Vie 19 jun","Sáb 20 jun","Dom 21 jun","Lun 22 jun","Mar 23 jun","Mié 24 jun","Jue 25 jun","Vie 26 jun","Sáb 27 jun"];
+const FORD=["Jue 11 jun","Vie 12 jun","Sáb 13 jun","Dom 14 jun","Lun 15 jun","Mar 16 jun","Mié 17 jun","Jue 18 jun","Vie 19 jun","Sáb 20 jun","Dom 21 jun","Lun 22 jun","Mar 23 jun","Mié 24 jun","Jue 25 jun","Vie 26 jun","Sáb 27 jun","Dom 28 jun","Lun 29 jun","Mar 30 jun","Mié 1 jul","Jue 2 jul","Vie 3 jul"];
 
 function getFechaHoy(){
   // Use browser local time — users are in COL timezone
@@ -669,7 +688,10 @@ function renderHoy(){
   const pill=document.getElementById('livePill');
   if(!ps.length){
     const prox=FORD.find(f=>PD.some(p=>p.f===f&&!getScore(p.n)));
-    el.innerHTML=`<div class="hoy-empty">No hay partidos hoy · Próxima fecha: <strong>${prox||'¡Ya terminó el torneo!'}</strong></div>`;
+    const msg = prox
+      ? `No hay partidos de grupos hoy · Próxima fecha: <strong>${prox}</strong>`
+      : `Fase de grupos finalizada · <strong>¡Arrancaron los 16avos de Final! 🏆</strong>`;
+    el.innerHTML=`<div class="hoy-empty">${msg}</div>`;
     if(pill) pill.style.display='none';
     return;
   }
