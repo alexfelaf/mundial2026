@@ -251,7 +251,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
   <div class="grid">
 
     <div class="col-left">
-      <div class="stitle">🏆 <span>16avos de Final</span> <small>Round of 32 · Jun 28 – Jul 3</small></div>
+      <div class="stitle">⚡ <span>8avos de Final</span> <small>Round of 16 · Jul 4 – Jul 7</small></div>
       <div id="bracketBody"><div class="loading"><div class="spin"></div></div></div>
       <div class="divider"></div>
       <div class="stitle">Todos los <span>Resultados</span> <small>Fase de grupos + 16avos</small></div>
@@ -678,9 +678,8 @@ function renderBracket(){
     }).join('');
   };
 
-  const r32=PD.filter(p=>p.g==='R32');
   const r16=PD.filter(p=>p.g==='R16');
-  el.innerHTML=`<div class="bracket-grid">${renderPartidos(r16,'⚡ 8AVOS DE FINAL')}${renderPartidos(r32,'📋 16AVOS — RESULTADOS')}</div>`;
+  el.innerHTML=`<div class="bracket-grid">${renderPartidos(r16,'')}</div>`;
 }
 
 // ── RESULTADOS (grupos + 16avos finalizados) ────────────────────────
