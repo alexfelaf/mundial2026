@@ -233,13 +233,14 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
   <div class="divider"></div>
 
   <!-- CTA -->
-  <div class="cta-banner" style="opacity:0.5;cursor:default;pointer-events:none">
-    <div class="cta-icon">⏳</div>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLScWQWrlHHdNkDWWaLm4_94DsLChiBYGK7PMKTgEcsyDen53sw/viewform" target="_blank" class="cta-banner" id="ctaBanner">
+    <div class="cta-icon">✏️</div>
     <div class="cta-text">
-      <div class="cta-title">Pronósticos 16avos — Cerrado</div>
-      <div class="cta-sub">Pronósticos de 8avos de Final pendientes · abrirán cuando se definan los cruces</div>
+      <div class="cta-title">¡Ingresá tu pronóstico — 8avos de Final!</div>
+      <div class="cta-sub">Cierra 10 min antes del primer partido · Sáb 4 jul · 11:50 COL</div>
     </div>
-  </div>
+    <div class="cta-arrow">→</div>
+  </a>
 
   <div class="divider"></div>
 
@@ -396,9 +397,18 @@ const PD=[
   {n:86,f:"Vie 3 jul",h:"13:00",s:"AT&T Stadium, Dallas",g:"R32",l:"Australia",v:"Egipto"},
   {n:87,f:"Vie 3 jul",h:"17:00",s:"Hard Rock Stadium, Miami",g:"R32",l:"Argentina",v:"Cabo Verde"},
   {n:88,f:"Vie 3 jul",h:"20:30",s:"Arrowhead Stadium, Kansas City",g:"R32",l:"Colombia",v:"Ghana"},
+  // ── 8avos de Final ───────────────────────────────────────────────
+  {n:89,f:"Sáb 4 jul",h:"12:00",s:"NRG Stadium, Houston",g:"R16",l:"Canadá",v:"Marruecos"},
+  {n:90,f:"Sáb 4 jul",h:"16:00",s:"Lincoln Financial, Philadelphia",g:"R16",l:"Paraguay",v:"Francia"},
+  {n:91,f:"Dom 5 jul",h:"15:00",s:"MetLife Stadium, Nueva Jersey",g:"R16",l:"Brasil",v:"Noruega"},
+  {n:92,f:"Dom 5 jul",h:"19:00",s:"Est. Azteca, Ciudad de México",g:"R16",l:"México",v:"Inglaterra"},
+  {n:93,f:"Lun 6 jul",h:"14:00",s:"AT&T Stadium, Dallas",g:"R16",l:"Portugal",v:"España"},
+  {n:94,f:"Lun 6 jul",h:"19:00",s:"Lumen Field, Seattle",g:"R16",l:"EE.UU.",v:"Bélgica"},
+  {n:95,f:"Mar 7 jul",h:"11:00",s:"Mercedes-Benz Stadium, Atlanta",g:"R16",l:"Argentina",v:"Egipto"},
+  {n:96,f:"Mar 7 jul",h:"15:00",s:"BC Place, Vancouver",g:"R16",l:"Suiza",v:"Colombia"},
 ];
 
-const FORD=["Jue 11 jun","Vie 12 jun","Sáb 13 jun","Dom 14 jun","Lun 15 jun","Mar 16 jun","Mié 17 jun","Jue 18 jun","Vie 19 jun","Sáb 20 jun","Dom 21 jun","Lun 22 jun","Mar 23 jun","Mié 24 jun","Jue 25 jun","Vie 26 jun","Sáb 27 jun","Dom 28 jun","Lun 29 jun","Mar 30 jun","Mié 1 jul","Jue 2 jul","Vie 3 jul"];
+const FORD=["Jue 11 jun","Vie 12 jun","Sáb 13 jun","Dom 14 jun","Lun 15 jun","Mar 16 jun","Mié 17 jun","Jue 18 jun","Vie 19 jun","Sáb 20 jun","Dom 21 jun","Lun 22 jun","Mar 23 jun","Mié 24 jun","Jue 25 jun","Vie 26 jun","Sáb 27 jun","Dom 28 jun","Lun 29 jun","Mar 30 jun","Mié 1 jul","Jue 2 jul","Vie 3 jul","Sáb 4 jul","Dom 5 jul","Lun 6 jul","Mar 7 jul"];
 
 function getFechaHoy(){
   // Use browser local time — users are in COL timezone
@@ -637,40 +647,40 @@ function renderHoy(){
 function renderBracket(){
   const el=document.getElementById('bracketBody');
   if(!el) return;
+
+  const renderPartidos=(partidos,fase)=>{
+    if(!partidos.length) return '';
+    const header=`<div style="font-size:11px;letter-spacing:2px;color:var(--t3);padding:10px 0 4px;font-family:'Bebas Neue',sans-serif">${fase}</div>`;
+    return header+partidos.map(p=>{
+      const sc=getLiveScore(p.n);
+      const fin=sc&&sc.fin;
+      const live=sc&&sc.live;
+      let centro,cls='confirmed';
+      if(fin){
+        let extra='';
+        if(sc.etGl!==null&&sc.etGl!==undefined) extra+=`<div class="b-extra">Prórroga: ${sc.etGl} - ${sc.etGv}</div>`;
+        if(sc.penGl!==null&&sc.penGl!==undefined) extra+=`<div class="b-extra">Penales: ${sc.penGl} - ${sc.penGv}</div>`;
+        centro=`<div class="b-score">${sc.gl} - ${sc.gv}</div><div class="b-label">90 min</div>${extra}`;
+        cls='fin';
+      } else if(live){
+        const m=(sc.gl!==null&&sc.gv!==null)?`${sc.gl} - ${sc.gv}`:'';
+        centro=`<div class="b-score live-score">⚽ ${m}</div><div class="live-badge">En vivo</div>`;
+        cls='live';
+      } else {
+        centro=`<div class="b-hora">${p.h} COL</div><div class="b-fecha">${p.f}</div><div class="b-sede">${p.s}</div>`;
+        cls='pending';
+      }
+      return `<div class="b-match ${cls}">
+        <div class="b-team">${flag(p.l)} ${p.l}</div>
+        <div class="b-vs">${centro}</div>
+        <div class="b-team">${flag(p.v)} ${p.v}</div>
+      </div>`;
+    }).join('');
+  };
+
   const r32=PD.filter(p=>p.g==='R32');
-  if(!r32.length){ el.innerHTML=''; return; }
-
-  el.innerHTML=`<div class="bracket-grid">${r32.map(p=>{
-    const sc=getLiveScore(p.n);
-    const fin=sc&&sc.fin;
-    const live=sc&&sc.live;
-
-    let centro, cls='confirmed';
-    if(fin){
-      // Resultado 90 min
-      let extra='';
-      if(sc.etGl!==null&&sc.etGl!==undefined){
-        extra+=`<div class="b-extra">Prórroga: ${sc.etGl} - ${sc.etGv}</div>`;
-      }
-      if(sc.penGl!==null&&sc.penGl!==undefined){
-        extra+=`<div class="b-extra">Penales: ${sc.penGl} - ${sc.penGv}</div>`;
-      }
-      centro=`<div class="b-score">${sc.gl} - ${sc.gv}</div><div class="b-label">90 min</div>${extra}`;
-      cls='fin';
-    } else if(live){
-      const marcador=(sc.gl!==null&&sc.gv!==null)?`${sc.gl} - ${sc.gv}`:'';
-      centro=`<div class="b-score live-score">⚽ ${marcador}</div><div class="live-badge">En vivo</div>`;
-      cls='live';
-    } else {
-      centro=`<div class="b-hora">${p.h} COL</div><div class="b-fecha">${p.f}</div><div class="b-sede">${p.s}</div>`;
-    }
-
-    return `<div class="b-match ${cls}">
-      <div class="b-team">${flag(p.l)} ${p.l}</div>
-      <div class="b-vs">${centro}</div>
-      <div class="b-team">${flag(p.v)} ${p.v}</div>
-    </div>`;
-  }).join('')}</div>`;
+  const r16=PD.filter(p=>p.g==='R16');
+  el.innerHTML=`<div class="bracket-grid">${renderPartidos(r16,'⚡ 8AVOS DE FINAL')}${renderPartidos(r32,'📋 16AVOS — RESULTADOS')}</div>`;
 }
 
 // ── RESULTADOS (grupos + 16avos finalizados) ────────────────────────
