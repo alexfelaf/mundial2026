@@ -233,11 +233,11 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
   <div class="divider"></div>
 
   <!-- CTA -->
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLScWQWrlHHdNkDWWaLm4_94DsLChiBYGK7PMKTgEcsyDen53sw/viewform" target="_blank" class="cta-banner" id="ctaBanner">
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdd9f1Zl6CpID1cXnSwxTe4pbveXuyGLiz6GMVYtfSIy2vjXw/viewform" target="_blank" class="cta-banner" id="ctaBanner">
     <div class="cta-icon">✏️</div>
     <div class="cta-text">
-      <div class="cta-title">¡Ingresá tu pronóstico — 8avos de Final!</div>
-      <div class="cta-sub">Cierra 10 min antes del primer partido · Sáb 4 jul · 11:50 COL</div>
+      <div class="cta-title">¡Ingresá tu pronóstico — Cuartos de Final!</div>
+      <div class="cta-sub">Cierra 10 min antes del primer partido · Jue 9 jul · 14:50 COL</div>
     </div>
     <div class="cta-arrow">→</div>
   </a>
@@ -251,7 +251,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
   <div class="grid">
 
     <div class="col-left">
-      <div class="stitle">⚡ <span>8avos de Final</span> <small>Round of 16 · Jul 4 – Jul 7</small></div>
+      <div class="stitle">⚡ <span>Cuartos de Final</span> <small>Quarterfinals · Jul 9 – Jul 11</small></div>
       <div id="bracketBody"><div class="loading"><div class="spin"></div></div></div>
       <div class="divider"></div>
       <div class="stitle">Todos los <span>Resultados</span> <small>Fase de grupos + 16avos</small></div>
@@ -406,9 +406,14 @@ const PD=[
   {n:94,f:"Lun 6 jul",h:"19:00",s:"Lumen Field, Seattle",g:"R16",l:"EE.UU.",v:"Bélgica"},
   {n:95,f:"Mar 7 jul",h:"11:00",s:"Mercedes-Benz Stadium, Atlanta",g:"R16",l:"Argentina",v:"Egipto"},
   {n:96,f:"Mar 7 jul",h:"15:00",s:"BC Place, Vancouver",g:"R16",l:"Suiza",v:"Colombia"},
+  // ── Cuartos de Final ─────────────────────────────────────────────
+  {n:97,f:"Jue 9 jul",h:"15:00",s:"Gillette Stadium, Boston",g:"QF",l:"Francia",v:"Marruecos"},
+  {n:98,f:"Vie 10 jul",h:"14:00",s:"SoFi Stadium, Los Ángeles",g:"QF",l:"España",v:"Bélgica"},
+  {n:99,f:"Sáb 11 jul",h:"16:00",s:"Hard Rock Stadium, Miami",g:"QF",l:"Noruega",v:"Inglaterra"},
+  {n:100,f:"Sáb 11 jul",h:"20:00",s:"Arrowhead Stadium, Kansas City",g:"QF",l:"Argentina",v:"Suiza"},
 ];
 
-const FORD=["Jue 11 jun","Vie 12 jun","Sáb 13 jun","Dom 14 jun","Lun 15 jun","Mar 16 jun","Mié 17 jun","Jue 18 jun","Vie 19 jun","Sáb 20 jun","Dom 21 jun","Lun 22 jun","Mar 23 jun","Mié 24 jun","Jue 25 jun","Vie 26 jun","Sáb 27 jun","Dom 28 jun","Lun 29 jun","Mar 30 jun","Mié 1 jul","Jue 2 jul","Vie 3 jul","Sáb 4 jul","Dom 5 jul","Lun 6 jul","Mar 7 jul"];
+const FORD=["Jue 11 jun","Vie 12 jun","Sáb 13 jun","Dom 14 jun","Lun 15 jun","Mar 16 jun","Mié 17 jun","Jue 18 jun","Vie 19 jun","Sáb 20 jun","Dom 21 jun","Lun 22 jun","Mar 23 jun","Mié 24 jun","Jue 25 jun","Vie 26 jun","Sáb 27 jun","Dom 28 jun","Lun 29 jun","Mar 30 jun","Mié 1 jul","Jue 2 jul","Vie 3 jul","Sáb 4 jul","Dom 5 jul","Lun 6 jul","Mar 7 jul","Jue 9 jul","Vie 10 jul","Sáb 11 jul"];
 
 function getFechaHoy(){
   // Use browser local time — users are in COL timezone
@@ -678,8 +683,8 @@ function renderBracket(){
     }).join('');
   };
 
-  const r16=PD.filter(p=>p.g==='R16');
-  el.innerHTML=`<div class="bracket-grid">${renderPartidos(r16,'')}</div>`;
+  const qf=PD.filter(p=>p.g==='QF');
+  el.innerHTML=`<div class="bracket-grid">${renderPartidos(qf,'')}</div>`;
 }
 
 // ── RESULTADOS (grupos + 16avos finalizados) ────────────────────────
