@@ -254,7 +254,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
       <div class="stitle">⚡ <span>Semifinales</span> <small>Semifinals · Jul 14 – Jul 15</small></div>
       <div id="bracketBody"><div class="loading"><div class="spin"></div></div></div>
       <div class="divider"></div>
-      <div class="stitle">Todos los <span>Resultados</span> <small>Fase de grupos + 16avos</small></div>
+      <div class="stitle">Todos los <span>Resultados</span></div>
       <div id="resBody"></div>
     </div>
 
@@ -712,7 +712,8 @@ function renderResultados(){
         <div class="res-eq r"><span class="res-flag">${flag(p.v)}</span><span class="res-name">${p.v}</span></div>
       </div>`;
     }).join('');
-    const label=fecha.includes('jun')&&parseInt(fecha)<28?'Fase de grupos':'16avos de Final';
+    const labels={'R32':'16avos de Final','R16':'8avos de Final','QF':'Cuartos de Final','SF':'Semifinales'};
+    const label=ps[0]&&ps[0].g&&labels[ps[0].g] ? labels[ps[0].g] : 'Fase de grupos';
     return `<div class="fecha-hdr">${fecha} <span style="font-size:10px;opacity:.5">${label}</span></div><div class="res-list">${cards}</div>`;
   }).join('');
   if(!el.innerHTML.trim()){
