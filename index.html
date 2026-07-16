@@ -232,12 +232,20 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
 
   <div class="divider"></div>
 
+
+  <!-- GANADOR -->
+  <div style="background:linear-gradient(135deg,rgba(255,200,0,.15),rgba(255,150,0,.1));border:2px solid rgba(255,200,0,.4);border-radius:14px;padding:16px 20px;margin:12px 0;text-align:center">
+    <div style="font-size:28px;margin-bottom:6px">🏆👑🏆</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#FFD700;letter-spacing:2px">¡GANADOR DE LA POLLA!</div>
+    <div style="font-size:20px;font-weight:800;color:var(--t);margin:6px 0">Luis Andrade</div>
+    <div style="font-size:12px;color:var(--t3);margin-top:4px">¡Felicitaciones al campeón de la Polla Mundial 2026! 🎉</div>
+  </div>
   <!-- CTA -->
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSftjMPorNLapw3XoaEByQWldzynXWHX_GO6ebOetQb9mgqt8Q/viewform" target="_blank" class="cta-banner" id="ctaBanner">
+  <a href="https://forms.gle/df4o7P5unmHtMtFw7" target="_blank" class="cta-banner" id="ctaBanner">
     <div class="cta-icon">✏️</div>
     <div class="cta-text">
-      <div class="cta-title">¡Ingresá tu pronóstico — Semifinales!</div>
-      <div class="cta-sub">Cierra 10 min antes del primer partido · Mar 14 jul · 13:50 COL</div>
+      <div class="cta-title">¡Ingresá tu pronóstico — Final & 3er Puesto!</div>
+      <div class="cta-sub">Cierra 10 min antes del primer partido · Sáb 18 jul · 15:50 COL</div>
     </div>
     <div class="cta-arrow">→</div>
   </a>
@@ -251,7 +259,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(8,12,13,0.92);backdrop-
   <div class="grid">
 
     <div class="col-left">
-      <div class="stitle">⚡ <span>Semifinales</span> <small>Semifinals · Jul 14 – Jul 15</small></div>
+      <div class="stitle">⚡ <span>Final & 3er Puesto</span> <small>Jul 18 – Jul 19</small></div>
       <div id="bracketBody"><div class="loading"><div class="spin"></div></div></div>
       <div class="divider"></div>
       <div class="stitle">Todos los <span>Resultados</span></div>
@@ -414,9 +422,12 @@ const PD=[
   // ── Semifinales ──────────────────────────────────────────────────
   {n:101,f:"Mar 14 jul",h:"14:00",s:"AT&T Stadium, Dallas",g:"SF",l:"Francia",v:"España"},
   {n:102,f:"Mié 15 jul",h:"14:00",s:"Mercedes-Benz Stadium, Atlanta",g:"SF",l:"Inglaterra",v:"Argentina"},
+  // ── 3er Puesto y Final ───────────────────────────────────────────
+  {n:103,f:"Sáb 18 jul",h:"16:00",s:"Hard Rock Stadium, Miami",g:"TP",l:"Francia",v:"Inglaterra"},
+  {n:104,f:"Dom 19 jul",h:"14:00",s:"MetLife Stadium, Nueva Jersey",g:"F",l:"España",v:"Argentina"},
 ];
 
-const FORD=["Jue 11 jun","Vie 12 jun","Sáb 13 jun","Dom 14 jun","Lun 15 jun","Mar 16 jun","Mié 17 jun","Jue 18 jun","Vie 19 jun","Sáb 20 jun","Dom 21 jun","Lun 22 jun","Mar 23 jun","Mié 24 jun","Jue 25 jun","Vie 26 jun","Sáb 27 jun","Dom 28 jun","Lun 29 jun","Mar 30 jun","Mié 1 jul","Jue 2 jul","Vie 3 jul","Sáb 4 jul","Dom 5 jul","Lun 6 jul","Mar 7 jul","Jue 9 jul","Vie 10 jul","Sáb 11 jul","Mar 14 jul","Mié 15 jul"];
+const FORD=["Jue 11 jun","Vie 12 jun","Sáb 13 jun","Dom 14 jun","Lun 15 jun","Mar 16 jun","Mié 17 jun","Jue 18 jun","Vie 19 jun","Sáb 20 jun","Dom 21 jun","Lun 22 jun","Mar 23 jun","Mié 24 jun","Jue 25 jun","Vie 26 jun","Sáb 27 jun","Dom 28 jun","Lun 29 jun","Mar 30 jun","Mié 1 jul","Jue 2 jul","Vie 3 jul","Sáb 4 jul","Dom 5 jul","Lun 6 jul","Mar 7 jul","Jue 9 jul","Vie 10 jul","Sáb 11 jul","Mar 14 jul","Mié 15 jul","Sáb 18 jul","Dom 19 jul"];
 
 function getFechaHoy(){
   // Use browser local time — users are in COL timezone
@@ -686,8 +697,8 @@ function renderBracket(){
     }).join('');
   };
 
-  const sf=PD.filter(p=>p.g==='SF');
-  el.innerHTML=`<div class="bracket-grid">${renderPartidos(sf,'')}</div>`;
+  const tp=PD.filter(p=>p.g==='TP'||p.g==='F');
+  el.innerHTML=`<div class="bracket-grid">${renderPartidos(tp,'')}</div>`;
 }
 
 // ── RESULTADOS (grupos + 16avos finalizados) ────────────────────────
@@ -712,7 +723,7 @@ function renderResultados(){
         <div class="res-eq r"><span class="res-flag">${flag(p.v)}</span><span class="res-name">${p.v}</span></div>
       </div>`;
     }).join('');
-    const labels={'R32':'16avos de Final','R16':'8avos de Final','QF':'Cuartos de Final','SF':'Semifinales'};
+    const labels={'R32':'16avos de Final','R16':'8avos de Final','QF':'Cuartos de Final','SF':'Semifinales','TP':'3er Puesto','F':'🏆 Final'};
     const label=ps[0]&&ps[0].g&&labels[ps[0].g] ? labels[ps[0].g] : 'Fase de grupos';
     return `<div class="fecha-hdr">${fecha} <span style="font-size:10px;opacity:.5">${label}</span></div><div class="res-list">${cards}</div>`;
   }).join('');
