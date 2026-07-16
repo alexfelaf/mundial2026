@@ -697,8 +697,33 @@ function renderBracket(){
     }).join('');
   };
 
-  const tp=PD.filter(p=>p.g==='TP'||p.g==='F');
-  el.innerHTML=`<div class="bracket-grid">${renderPartidos(tp,'')}</div>`;
+  const tp=PD.filter(p=>(p.g==='TP'||p.g==='F'));
+  // Para estos partidos solo mostrar como pendientes — no buscar score hasta que se jueguen
+  const html=tp.map(p=>{
+    const sc=getLiveScore(p.n);
+    const fin=sc&&sc.fin&&sc.gl!==null&&sc.gl!==undefined&&!isNaN(sc.gl);
+    const live=sc&&sc.live;
+    let centro,cls='pending';
+    if(fin){
+      let extra='';
+      if(sc.etGl!==null&&sc.etGl!==undefined) extra+=`<div class="b-extra">Prórroga: ${sc.etGl} - ${sc.etGv}</div>`;
+      if(sc.penGl!==null&&sc.penGl!==undefined) extra+=`<div class="b-extra">Penales: ${sc.penGl} - ${sc.penGv}</div>`;
+      centro=`<div class="b-score">${sc.gl} - ${sc.gv}</div><div class="b-label">90 min</div>${extra}`;
+      cls='fin';
+    } else if(live){
+      const m=(sc.gl!==null&&sc.gv!==null)?`${sc.gl} - ${sc.gv}`:'';
+      centro=`<div class="b-score live-score">⚽ ${m}</div><div class="live-badge">En vivo</div>`;
+      cls='live';
+    } else {
+      centro=`<div class="b-hora">${p.h} COL</div><div class="b-fecha">${p.f}</div><div class="b-sede">${p.s}</div>`;
+    }
+    return `<div class="b-match ${cls}">
+      <div class="b-team">${flag(p.l)} ${p.l}</div>
+      <div class="b-vs">${centro}</div>
+      <div class="b-team">${flag(p.v)} ${p.v}</div>
+    </div>`;
+  }).join('');
+  el.innerHTML=`<div class="bracket-grid">${html}</div>`;
 }
 
 // ── RESULTADOS (grupos + 16avos finalizados) ────────────────────────
